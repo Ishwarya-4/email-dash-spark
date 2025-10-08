@@ -56,18 +56,19 @@ export const parseCSV = (file: File): Promise<EmailData[]> => {
       header: true,
       dynamicTyping: true,
       skipEmptyLines: true,
+      transformHeader: (header) => header.trim(),
       complete: (results) => {
         const data = results.data.map((row: any) => ({
           month: normalizeMonth(row.month || row.Month),
-          business_unit: String(row.business_unit || row['Business Unit'] || ''),
-          nurture_name: String(row.nurture_name || row['Nurture Name'] || ''),
-          nurture_type: String(row.nurture_type || row['Nurture Type'] || ''),
-          total_sent: Number(row.total_sent || row['Total Sent'] || 0),
+          business_unit: String(row.business_unit || row['Business Unit'] || row['Bussiness Unit'] || ''),
+          nurture_name: String(row.nurture_name || row['Nurture Name'] || row.Name || ''),
+          nurture_type: String(row.nurture_type || row['Nurture Type'] || row['Type of Nurture'] || ''),
+          total_sent: Number(row.total_sent || row['Total Sent'] || row.Sent || 0),
           delivered: Number(row.delivered || row.Delivered || 0),
           bounces: Number(row.bounces || row.Bounces || 0),
-          opens: Number(row.opens || row.Opens || 0),
-          clicks: Number(row.clicks || row.Clicks || 0),
-          unsubscribes: Number(row.unsubscribes || row.Unsubscribes || 0),
+          opens: Number(row.opens || row.Opens || row['Total Open'] || 0),
+          clicks: Number(row.clicks || row.Clicks || row['Total Clicks'] || 0),
+          unsubscribes: Number(row.unsubscribes || row.Unsubscribes || row['Opt out'] || 0),
         }));
         resolve(data);
       },
