@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
 import { FileUpload } from './FileUpload';
+import { SheetSelector } from './SheetSelector';
 import { FilterSection } from './FilterSection';
 import { KPICards } from './KPICards';
 import { ChartsGrid } from './ChartsGrid';
 import { Button } from '@/components/ui/button';
 import { RotateCcw } from 'lucide-react';
-import { parseFile, EmailData } from '@/utils/dataParser';
+import { parseFile, getExcelSheets, EmailData } from '@/utils/dataParser';
 import { toast } from 'sonner';
 
 export const Dashboard = () => {
@@ -14,20 +15,65 @@ export const Dashboard = () => {
   const [selectedBusinessUnit, setSelectedBusinessUnit] = useState('all');
   const [selectedNurtureName, setSelectedNurtureName] = useState('all');
   const [selectedNurtureType, setSelectedNurtureType] = useState('all');
+  const [currentFile, setCurrentFile] = useState<File | null>(null);
+  const [availableSheets, setAvailableSheets] = useState<string[]>([]);
+  const [selectedSheet, setSelectedSheet] = useState<string>('');
 
   const handleFileUpload = async (file: File) => {
     try {
-      const parsedData = await parseFile(file);
-      setData(parsedData);
-      toast.success('File uploaded successfully!');
+      setCurrentFile(file);
+      const extension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+      
+      // Check if it's an Excel file
+      if (['.xls', '.xlsx', '.xlsm'].includes(extension)) {
+        const sheets = await getExcelSheets(file);
+        
+        if (sheets.length > 1) {
+          // Multiple sheets - let user select
+          setAvailableSheets(sheets);
+          setSelectedSheet(sheets[0]);
+          toast.info('Multiple sheets detected. Please select a sheet.');
+        } else {
+          // Single sheet - parse directly
+          const parsedData = await parseFile(file);
+          setData(parsedData);
+          setAvailableSheets([]);
+          setSelectedSheet('');
+          toast.success('File uploaded successfully!');
+        }
+      } else {
+        // Non-Excel file - parse directly
+        const parsedData = await parseFile(file);
+        setData(parsedData);
+        setAvailableSheets([]);
+        setSelectedSheet('');
+        toast.success('File uploaded successfully!');
+      }
     } catch (error) {
       toast.error('Failed to parse file. Please check the format.');
       console.error('Parse error:', error);
     }
   };
 
+  const handleSheetSelect = async (sheetName: string) => {
+    setSelectedSheet(sheetName);
+    if (currentFile) {
+      try {
+        const parsedData = await parseFile(currentFile, sheetName);
+        setData(parsedData);
+        toast.success(`Loaded data from sheet: ${sheetName}`);
+      } catch (error) {
+        toast.error('Failed to parse selected sheet.');
+        console.error('Parse error:', error);
+      }
+    }
+  };
+
   const handleClear = () => {
     setData([]);
+    setCurrentFile(null);
+    setAvailableSheets([]);
+    setSelectedSheet('');
     setSelectedMonth('all');
     setSelectedBusinessUnit('all');
     setSelectedNurtureName('all');
@@ -93,12 +139,21 @@ export const Dashboard = () => {
             onClick={handleClear}
             variant="outline"
             className="w-full sm:w-auto gap-2"
-            disabled={data.length === 0}
+            disabled={data.length === 0 && availableSheets.length === 0}
           >
             <RotateCcw className="w-4 h-4" />
             Clear
           </Button>
         </div>
+
+        {/* Sheet Selector */}
+        {availableSheets.length > 1 && (
+          <SheetSelector
+            sheets={availableSheets}
+            selectedSheet={selectedSheet}
+            onSheetSelect={handleSheetSelect}
+          />
+        )}
 
         {/* Filters */}
         {data.length > 0 && (

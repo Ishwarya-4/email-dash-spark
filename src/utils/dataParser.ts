@@ -76,7 +76,7 @@ export const parseCSV = (file: File): Promise<EmailData[]> => {
   });
 };
 
-export const parseExcel = (file: File): Promise<EmailData[]> => {
+export const getExcelSheets = (file: File): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
@@ -84,21 +84,40 @@ export const parseExcel = (file: File): Promise<EmailData[]> => {
       try {
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
         const workbook = XLSX.read(data, { type: 'array', cellDates: false });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
+        resolve(workbook.SheetNames);
+      } catch (error) {
+        reject(error);
+      }
+    };
+    
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsArrayBuffer(file);
+  });
+};
+
+export const parseExcel = (file: File, sheetName?: string): Promise<EmailData[]> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array', cellDates: false });
+        const selectedSheet = sheetName || workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[selectedSheet];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
         
         const parsedData = jsonData.map((row: any) => ({
           month: normalizeMonth(row.month || row.Month),
-          business_unit: String(row.business_unit || row['Business Unit'] || ''),
+          business_unit: String(row.business_unit || row['Business Unit'] || row['Bussiness Unit'] || ''),
           nurture_name: String(row.nurture_name || row['Nurture Name'] || ''),
-          nurture_type: String(row.nurture_type || row['Nurture Type'] || ''),
-          total_sent: Number(row.total_sent || row['Total Sent'] || 0),
+          nurture_type: String(row.nurture_type || row['Nurture Type'] || row['Type of Nurture'] || ''),
+          total_sent: Number(row.total_sent || row['Total Sent'] || row.Sent || 0),
           delivered: Number(row.delivered || row.Delivered || 0),
           bounces: Number(row.bounces || row.Bounces || 0),
-          opens: Number(row.opens || row.Opens || 0),
-          clicks: Number(row.clicks || row.Clicks || 0),
-          unsubscribes: Number(row.unsubscribes || row.Unsubscribes || 0),
+          opens: Number(row.opens || row.Opens || row['Total Open'] || 0),
+          clicks: Number(row.clicks || row.Clicks || row['Total Clicks'] || 0),
+          unsubscribes: Number(row.unsubscribes || row.Unsubscribes || row['Opt out'] || 0),
         }));
         
         resolve(parsedData);
@@ -142,7 +161,7 @@ export const parseJSON = (file: File): Promise<EmailData[]> => {
   });
 };
 
-export const parseFile = async (file: File): Promise<EmailData[]> => {
+export const parseFile = async (file: File, sheetName?: string): Promise<EmailData[]> => {
   const extension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
   
   switch (extension) {
@@ -151,7 +170,7 @@ export const parseFile = async (file: File): Promise<EmailData[]> => {
     case '.xls':
     case '.xlsx':
     case '.xlsm':
-      return parseExcel(file);
+      return parseExcel(file, sheetName);
     case '.json':
       return parseJSON(file);
     default:

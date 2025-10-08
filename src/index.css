@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 17% 97%;
+    --background: 217 33% 97%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -17,10 +17,10 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 221 83% 53%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
     
-    --primary-glow: 221 100% 65%;
+    --primary-glow: 217 91% 70%;
 
     --secondary: 220 14% 96%;
     --secondary-foreground: 222 47% 11%;
@@ -28,7 +28,7 @@ All colors MUST be HSL.
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
 
-    --accent: 262 83% 58%;
+    --accent: 174 72% 56%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -36,7 +36,7 @@ All colors MUST be HSL.
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 221 83% 53%;
+    --ring: 217 91% 60%;
 
     --radius: 0.5rem;
     
@@ -44,19 +44,19 @@ All colors MUST be HSL.
     --warning: 38 92% 50%;
     --info: 199 89% 48%;
     
-    --chart-1: 221 83% 53%;
-    --chart-2: 262 83% 58%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 174 72% 56%;
     --chart-3: 142 76% 36%;
     --chart-4: 38 92% 50%;
-    --chart-5: 199 89% 48%;
+    --chart-5: 263 70% 50%;
     
-    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(262 83% 58%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 17% 98%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(263 70% 50%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(217 33% 98%) 100%);
     
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --shadow-card: 0 2px 8px 0 rgb(0 0 0 / 0.08);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.08);
+    --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.12);
+    --shadow-lg: 0 12px 24px -4px rgb(0 0 0 / 0.15);
+    --shadow-card: 0 4px 16px 0 rgb(0 0 0 / 0.06);
   }
 
   .dark {
@@ -69,10 +69,10 @@ All colors MUST be HSL.
     --popover: 222 47% 14%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 221 83% 53%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
     
-    --primary-glow: 221 100% 65%;
+    --primary-glow: 217 91% 70%;
 
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
@@ -80,42 +80,51 @@ All colors MUST be HSL.
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 262 83% 58%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 174 72% 56%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 221 83% 53%;
+    --ring: 217 91% 60%;
     
     --success: 142 76% 36%;
     --warning: 38 92% 50%;
     --info: 199 89% 48%;
     
-    --chart-1: 221 83% 53%;
-    --chart-2: 262 83% 58%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 174 72% 56%;
     --chart-3: 142 76% 36%;
     --chart-4: 38 92% 50%;
-    --chart-5: 199 89% 48%;
+    --chart-5: 263 70% 50%;
     
-    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(262 83% 58%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(263 70% 50%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(222 47% 14%) 0%, hsl(222 47% 16%) 100%);
     
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
-    --shadow-card: 0 2px 8px 0 rgb(0 0 0 / 0.4);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 12px 24px -4px rgb(0 0 0 / 0.5);
+    --shadow-card: 0 4px 16px 0 rgb(0 0 0 / 0.35);
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  button, a, select {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  button:hover, a:hover {
+    transform: translateY(-1px);
   }
 }
