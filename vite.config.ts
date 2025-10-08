@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/email-dash-spark/',
+  base: mode === 'production' ? '/email-dash-spark/' : '/',
   server: {
     host: "::",
     port: 8080,

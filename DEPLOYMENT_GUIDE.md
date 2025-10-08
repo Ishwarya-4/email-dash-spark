@@ -77,13 +77,14 @@ This guide provides step-by-step instructions to deploy your Email Performance D
    ```
 
 4. **Update vite.config.ts**
-   Add base path configuration:
+   Set the base path to match your GitHub repository name (IMPORTANT: replace 'repository-name' with your actual repo name):
    ```typescript
    export default defineConfig(({ mode }) => ({
-     base: '/repository-name/',
+     base: mode === 'production' ? '/repository-name/' : '/',
      // ... rest of config
    }))
    ```
+   ⚠️ **Critical:** The repository name in the base path MUST exactly match your GitHub repository name, or you'll get 404 errors!
 
 5. **Deploy**
    ```bash
@@ -154,6 +155,26 @@ For better mobile responsiveness in Pardot, use this enhanced iframe code:
 ---
 
 ## 🔧 Troubleshooting
+
+### 404 Error on GitHub Pages
+
+**Issue:** Getting 404 error when accessing GitHub Pages URL  
+**Solutions:**
+1. **Check base path:** Ensure `base` in `vite.config.ts` matches your repository name exactly
+   - Example: If repo is `my-dashboard`, base should be `'/my-dashboard/'`
+   - Include the leading and trailing slashes
+2. **Verify deployment:** Make sure `npm run deploy` completed successfully
+3. **Check GitHub Pages settings:** Confirm gh-pages branch is selected in Settings → Pages
+4. **Wait a few minutes:** GitHub Pages can take 5-10 minutes to deploy initially
+
+### 404 Error When Running Locally
+
+**Issue:** Getting 404 error with `npm run dev`  
+**Solution:** The base path should be conditional. Update `vite.config.ts`:
+```typescript
+base: mode === 'production' ? '/repository-name/' : '/',
+```
+This ensures local development uses `/` while production uses `/repository-name/`
 
 ### Dashboard Not Loading in Iframe
 
