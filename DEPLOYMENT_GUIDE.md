@@ -77,14 +77,14 @@ This guide provides step-by-step instructions to deploy your Email Performance D
    ```
 
 4. **Update vite.config.ts**
-   Set the base path to match your GitHub repository name (IMPORTANT: replace 'repository-name' with your actual repo name):
+   Set the base path to match your GitHub repository name (IMPORTANT: replace 'email-dash-spark' with your actual repo name):
    ```typescript
    export default defineConfig(({ mode }) => ({
-     base: mode === 'production' ? '/repository-name/' : '/',
+     base: mode === 'production' ? '/email-dash-spark/' : '/',
      // ... rest of config
    }))
    ```
-   ⚠️ **Critical:** The repository name in the base path MUST exactly match your GitHub repository name, or you'll get 404 errors!
+   ⚠️ **Critical:** The repository name in the base path MUST exactly match your GitHub repository name!
 
 5. **Deploy**
    ```bash
