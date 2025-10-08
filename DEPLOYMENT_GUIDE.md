@@ -93,9 +93,10 @@ This guide provides step-by-step instructions to deploy your Email Performance D
 6. **Enable GitHub Pages**
    - Go to your repository on GitHub
    - Navigate to Settings → Pages
-   - Under "Source", select "gh-pages" branch
+   - Under "Build and deployment", set Source to "Deploy from a branch"
+   - Under "Branch", select "gh-pages" and "/ (root)" folder
    - Click Save
-   - Your site will be available at `https://yourusername.github.io/repository-name`
+   - Your site will be available at `https://yourusername.github.io/repository-name` (may take a few minutes)
 
 ---
 
